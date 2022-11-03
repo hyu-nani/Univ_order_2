@@ -23,11 +23,27 @@ long sensor(){
   long distance = (timeDistance/2) / 29.1; //[ cm ]
   return distance;
 }
-
-void actionServo(float angle)
+int prePWM = 0;
+void actionServo(int angle)
 {
-  int val = map(angle,0,120,0,200);
-  analogWrite(servo,val);
+  if(angle > prePWM)
+  {
+    for(int i =0; i< angle; i++)
+    {
+      analogWrite(servo,i);
+      delay(10);
+      prePWM = i;
+    }
+  } else {
+    for(int i =prePWM; i> angle; i--)
+    {
+      analogWrite(servo,i);
+      delay(10);
+      prePWM = i;
+    }
+  }
+  Serial.print("action servo:");
+  Serial.println(angle);
   delay(100);
 }
 
@@ -43,32 +59,10 @@ void loop() {
     actionServo(90);
     while(Sensorvalue >= 200)
     {
-      delay(1000);
+      Sensorvalue = analogRead(pressSensor);
+      delay(100);
     }
     delay(3000);
     actionServo(0);
   }
-  /*
-  while (Sensorvalue <= 200)
-  {
-    if (distance <=20 ){ 
-      for(int i = 0 ; i < angle; i++)
-      {
-      }
-    } 
-    break;
-
-    while (distance >= 20)
-    {
-      for(int i = angle ; i > 0 ; i--)
-      {
-        analogWrite(servo,i);
-        Serial.println(i);
-        delay(10);
-      }
-    } 
-    delay(3000); 
-    break ;
-  }
-  */
 }
