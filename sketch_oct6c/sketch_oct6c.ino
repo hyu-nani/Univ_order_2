@@ -26,11 +26,12 @@ long sensor()
   return distance;
 }
 
+// 이동평균 필터
 const float filter = 100;
 float Sensorvalue = 0;
 float pressSensor()
 {
-    Sensorvalue = (analogRead(pressSensor) / filter + ( filter - 1 ) * Sensorvalue) / filter;
+    Sensorvalue = ( analogRead(pressSensor) / filter + ( filter - 1 ) * Sensorvalue) / filter;
     return Sensorvalue;
 }
 
