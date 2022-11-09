@@ -27,11 +27,11 @@ long sensor()
 }
 
 // 이동평균 필터
-const float filter = 100;
+const float filter = 10;
 float Sensorvalue = 0;
 float pressRead()
 {
-    Sensorvalue = ( analogRead(pressSensor) / filter + ( filter - 1 ) * Sensorvalue) / filter;
+    Sensorvalue = ( analogRead(pressSensor) + ( filter - 1 ) * Sensorvalue) / filter;
     return Sensorvalue;
 }
 
@@ -70,6 +70,11 @@ void loop() {
   if( distance <= 20)
   {
     actionServo(90);
+    while(Sensorvalue <= 200)
+    {
+      Sensorvalue = pressRead();
+      delay(100);
+    }
     while(Sensorvalue >= 200)
     {
       Sensorvalue = pressRead();
