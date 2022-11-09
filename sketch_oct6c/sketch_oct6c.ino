@@ -70,7 +70,7 @@ void loop() {
   if( distance <= 20)
   {
     actionServo(90);
-    while(Sensorvalue <= 200)
+    for( int i = 0 ; i < 30 ; i++)
     {
       Sensorvalue = pressRead();
       delay(100);
