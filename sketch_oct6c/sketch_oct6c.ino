@@ -29,7 +29,7 @@ long sensor()
 // 이동평균 필터
 const float filter = 100;
 float Sensorvalue = 0;
-float pressSensor()
+float pressRead()
 {
     Sensorvalue = ( analogRead(pressSensor) / filter + ( filter - 1 ) * Sensorvalue) / filter;
     return Sensorvalue;
@@ -62,7 +62,7 @@ void actionServo(int angle)
 
 void loop() {
   long distance = sensor();
-  Sensorvalue = pressSensor();
+  Sensorvalue = pressRead();
 
   Serial.print(distance);
   Serial.print("/");
@@ -72,7 +72,7 @@ void loop() {
     actionServo(90);
     while(Sensorvalue >= 200)
     {
-      Sensorvalue = pressSensor();
+      Sensorvalue = pressRead();
       delay(100);
     }
     delay(3000);
