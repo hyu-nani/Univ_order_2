@@ -4,7 +4,8 @@ const int trigPin = 11;
 const int pressSensor = A1;
 const int servoPin = 5;
 
-void setup() {
+void setup() 
+{
   Serial.begin(115200);        
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
@@ -12,7 +13,8 @@ void setup() {
   pinMode(servo, OUTPUT);
 }
 
-long sensor(){
+long sensor()
+{
   digitalWrite(trigPin,LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin,HIGH);
@@ -23,6 +25,15 @@ long sensor(){
   long distance = (timeDistance/2) / 29.1; //[ cm ]
   return distance;
 }
+
+const float filter = 100;
+float Sensorvalue = 0;
+float pressSensor()
+{
+    Sensorvalue = (analogRead(pressSensor) / filter + ( filter - 1 ) * Sensorvalue) / filter;
+    return Sensorvalue;
+}
+
 int prePWM = 0;
 void actionServo(int angle)
 {
@@ -47,9 +58,10 @@ void actionServo(int angle)
   delay(100);
 }
 
+
 void loop() {
   long distance = sensor();
-  int Sensorvalue = analogRead(pressSensor);
+  Sensorvalue = pressSensor();
 
   Serial.print(distance);
   Serial.print("/");
@@ -59,7 +71,7 @@ void loop() {
     actionServo(90);
     while(Sensorvalue >= 200)
     {
-      Sensorvalue = analogRead(pressSensor);
+      Sensorvalue = pressSensor();
       delay(100);
     }
     delay(3000);
